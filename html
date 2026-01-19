@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Laboratorio 02 - Contact Manager</title>
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    body { font-family: Arial; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; margin: 0; }
+    .container { max-width: 500px; margin: 0 auto; }
+    header { background: #4a90e2; color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; }
+    h1 { margin: 0; }
+    .subtitle { margin: 10px 0 0 0; opacity: 0.9; }
+    .stats { color: #666; margin-bottom: 20px; }
+    .card { border-radius: 8px; padding: 15px; margin-bottom: 10px; }
+    .favorite { border: 2px solid #ffd700; background: #fffef0; }
+    .normal { border: 1px solid #ddd; background: #fff; }
+    h3 { margin: 0 0 10px 0; }
+    p { margin: 5px 0; color: #666; }
+    .star { margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+
+  <script type="text/babel">
+    // === LABORATORIO 02 - ENTER TECH SCHOOL ===
+    
+    // DATOS ESTÁTICOS (Parte 3 del lab)
+    const contacts = [
+      { id: 1, name: "Ana García", phone: "+1 (555) 123-4567", email: "ana@email.com", isFavorite: true },
+      { id: 2, name: "Carlos López", phone: "+1 (555) 987-6543", email: "carlos@email.com", isFavorite: false },
+      { id: 3, name: "María Torres", phone: "+1 (555) 456-7890", email: "maria@email.com", isFavorite: true }
+    ];
+
+    // PARTE 1.1 - Header Component
+    function Header() {
+      return (
+        <header>
+          <h1>📱 Contact Manager</h1>
+          <p className="subtitle">Gestiona tus contactos de forma sencilla</p>
+        </header>
+      );
+    }
+
+    // PARTE 2.1 - ContactCard con Props
+    function ContactCard({ name, phone, email, isFavorite }) {
+      const cardClass = isFavorite ? 'card favorite' : 'card normal';
+      const star = isFavorite ? '⭐' : '☆';
+      
+      return (
+        <div className={cardClass}>
+          <h3>{name} <span className="star">{star}</span></h3>
+          <p>📞 {phone}</p>
+          <p>✉️ {email}</p>
+        </div>
+      );
+    }
+
+    // PARTE 3.2 - ContactList con .map() y key
+    function ContactList({ contacts }) {
+      if (contacts.length === 0) {
+        return <p style={{ color: '#999' }}>No hay contactos</p>;
+      }
+      
+      return (
+        <div>
+          {contacts.map(function(contact) {
+            return (
+              <ContactCard
+                key={contact.id}
+                name={contact.name}
+                phone={contact.phone}
+                email={contact.email}
+                isFavorite={contact.isFavorite}
+              />
+            );
+          })}
+        </div>
+      );
+    }
+
+    // APP PRINCIPAL - Refactorizado (Parte 3.3)
+    function App() {
+      const favoriteCount = contacts.filter(function(c) {
+        return c.isFavorite;
+      }).length;
+
+      return (
+        <div className="container">
+          <Header />
+          <p className="stats">
+            Total: {contacts.length} contactos | Favoritos: {favoriteCount}
+          </p>
+          <ContactList contacts={contacts} />
+        </div>
+      );
+    }
+
+    // RENDERIZAR
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+  </script>
+</body>
+</html>
